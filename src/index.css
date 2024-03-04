@@ -147,9 +147,6 @@ body {
 	--big-shadow: 10px 10px 5px hsl(0, 0%, 0%, 0.2);
 
 	--radius: 10%;
-
-	color: var(--clr-principal);
-	background-color: var(--clr-tertiary);
 }
 
 body {
@@ -162,15 +159,10 @@ body {
 	footer {
 	}
 	* {
-		div {
-			background-color: var(--clr-tertiary-bright);
-			box-shadow: var(--medium-shadow);
-		}
 		button {
 			color: var(--clr-principal);
 			background-color: var(--clr-tertiary-dark);
-			padding: 0.5rem 1rem;
-			margin: 0.5rem;
+			padding: 0.5rem 1.5rem;
 			font-size: 1rem;
 		}
 		button:hover {
@@ -179,5 +171,8 @@ body {
 		.savedBtn {
 			background: var(--clr-accept);
 		}
+	}
+	#root {
+		min-height: 100dvh;
 	}
 }
