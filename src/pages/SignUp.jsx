@@ -24,7 +24,7 @@ const SignUp = () => {
 					password: e.password.value,
 				}),
 			});
-			navigate("/");
+			navigate("/log-in");
 			return; // parses JSON response into native JavaScript objects
 		}
 	}
@@ -72,11 +72,11 @@ const SignUp = () => {
 						}}
 					/>
 
-					<button>Sign Up</button>
+					<button>Submit</button>
 				</form>
 				<p>
 					Do you already have an account?
-					<Link to={"/login"}> Long-in</Link>
+					<Link to={"/log-in"}> Long-in</Link>
 				</p>
 			</div>
 		</div>

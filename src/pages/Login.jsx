@@ -1,86 +1,56 @@
 import { Link } from "react-router-dom";
 import "../styles/form.css";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import Cookies from "universal-cookie";
 
-const SignUp = () => {
+const Login = () => {
 	const navigate = useNavigate();
 	const API_URL = "http://localhost:3000";
-	const [password, setPassword] = useState("");
-	const [confirmPassword, setConfirmPassword] = useState("");
-	async function registerUser(e) {
+	const cookies = new Cookies(null, { path: "/" });
+	async function loginUser(e) {
 		// Default options are marked with *
-		if (password === confirmPassword) {
-			await fetch(API_URL + "/users", {
-				method: "POST",
-				headers: {
-					Accept: "application/json",
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					full_name: e.full_name.value,
-					username: e.username.value,
-					email: e.email.value,
-					password: e.password.value,
-				}),
-			});
-			navigate("/");
-			return; // parses JSON response into native JavaScript objects
-		}
+		const response = await fetch(API_URL + "/login", {
+			method: "POST",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+				"Set-Cookie": "name1=value1",
+			},
+			body: JSON.stringify({
+				username: e.username.value,
+				password: e.password.value,
+			}),
+		});
+		const token = await response.json();
+		//response.headers.getSetCookie();
+		cookies.set("token", token);
+		navigate("/");
+		return; // parses JSON response into native JavaScript objects
 	}
 	return (
 		<div className="container-form">
 			<div className="form">
-				<h1>Sing up</h1>
+				<h1>Login</h1>
 				<form
 					action="POST"
 					onSubmit={(e) => {
 						e.preventDefault();
-						registerUser(e.target);
+						loginUser(e.target);
 					}}
 				>
-					<label htmlFor="full_name">Full name</label>
-					<input name="full_name" type="text" required />
 					<label htmlFor="username">Username</label>
 					<input name="username" type="text" required />
-					<label htmlFor="email">Email</label>
-					<input name="email" type="email" required />
 					<label htmlFor="password">Password</label>
-					<input
-						name="password"
-						type="password"
-						required
-						onChange={(e) => setPassword(e.target.value)}
-						style={{
-							backgroundColor:
-								password !== confirmPassword
-									? "#ff000033"
-									: null,
-						}}
-					/>
-					<label htmlFor="confirm_password">Confirm password</label>
-					<input
-						name="confirm_password"
-						type="password"
-						required
-						onChange={(e) => setConfirmPassword(e.target.value)}
-						style={{
-							backgroundColor:
-								password !== confirmPassword
-									? "#ff000033"
-									: null,
-						}}
-					/>
-
-					<button>Sign Up</button>
+					<input name="password" type="password" required />
+					<button>Submit</button>
 				</form>
 				<p>
-					Do you already have an account?
-					<Link to={"/login"}> Long-in</Link>
+					You do not have an account? You can
+					<Link to={"/sign-up"}> Sign-up</Link>
 				</p>
 			</div>
 		</div>
 	);
 };
 
-export default SignUp;
+export default Login;

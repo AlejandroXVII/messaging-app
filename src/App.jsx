@@ -1,4 +1,4 @@
-//import { Link } from "react-router-dom";
+import LogoutButton from "./components/LogoutButton";
 
 const App = () => {
 	return (
@@ -7,7 +7,7 @@ const App = () => {
 			<p>EXAMPLE TEXT TO SHOW HOW IT SEEM</p>
 			<div>
 				<button className="savedBtn">Accept</button>
-				<button>Cancel</button>
+				<LogoutButton />
 			</div>
 		</div>
 	);
