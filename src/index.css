@@ -129,7 +129,7 @@ body {
 
 :root {
 	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-	--clr: 45;
+	--clr: 273;
 	--clr-principal: hsl(var(--clr), 100%, 5%);
 	--clr-secondary: hsl(var(--clr), 100%, 50%);
 	--clr-tertiary: hsl(var(--clr), 0%, 98%);
@@ -137,7 +137,7 @@ body {
 	--clr-secondary-bright: hsl(var(--clr), 100%, 70%);
 	--clr-tertiary-bright: hsl(var(--clr), 100%, 100%);
 
-	--clr-secondary-dark: hsl(var(--clr), 100%, 35%);
+	--clr-secondary-dark: hsl(var(--clr), 100%, 15%);
 	--clr-tertiary-dark: hsl(var(--clr), 0%, 92%);
 
 	--clr-accept: hsl(151, 100%, 65%);
@@ -159,9 +159,13 @@ body {
 	footer {
 	}
 	* {
+		.icon-button {
+			background-color: transparent;
+			padding: 0;
+		}
 		button {
 			color: var(--clr-principal);
-			background-color: var(--clr-tertiary-dark);
+			background-color: var(--clr-tertiary-bright);
 			padding: 0.5rem 1.5rem;
 			font-size: 1rem;
 		}

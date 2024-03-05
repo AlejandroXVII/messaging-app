@@ -28,7 +28,7 @@ const Login = () => {
 		return; // parses JSON response into native JavaScript objects
 	}
 	return (
-		<div className="container-form">
+		<div className="container">
 			<div className="form">
 				<h1>Login</h1>
 				<form

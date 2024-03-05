@@ -1,0 +1,59 @@
+.message-box {
+	--border: 1.75px solid #cecece;
+	background-color: var(--clr-tertiary);
+	min-height: 100dvh;
+	min-width: 100dvw;
+	overflow: hidden;
+	display: grid;
+	grid-template-columns: 1fr 2fr;
+	.header {
+		display: grid;
+		grid-template-columns: auto 1fr auto;
+		align-items: center;
+		align-content: center;
+		gap: 0.5rem;
+	}
+	.sidebar {
+		min-height: inherit;
+		background-color: #ffffff;
+	}
+	.text-box {
+		background-color: #f0f4f5;
+		display: grid;
+		grid-auto-flow: column;
+		grid-template-rows: auto 1fr auto;
+		.messages {
+			background-color: #f7f7f7;
+		}
+		.send-messages {
+			display: grid;
+			grid-template-columns: 1fr auto;
+			gap: 0.5rem;
+			padding: 1rem 1rem;
+			border-top: var(--border);
+			input {
+				border-radius: 1rem;
+				border: 0;
+				padding: 0rem 1rem;
+				border: var(--border);
+			}
+		}
+	}
+	.icon {
+		display: flex;
+		align-content: center;
+		justify-content: center;
+		svg {
+			min-height: 2.5rem;
+			max-height: 3rem;
+			fill: var(--clr-secondary-dark);
+		}
+	}
+	.bar {
+		min-height: 2.5rem;
+		padding: 0.5rem;
+		border-bottom: var(--border);
+		background-color: #eeeeee;
+		border-right: var(--border);
+	}
+}
