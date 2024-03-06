@@ -21,9 +21,10 @@ const Login = () => {
 				password: e.password.value,
 			}),
 		});
-		const token = await response.json();
+		const jsonResponse = await response.json();
 		//response.headers.getSetCookie();
-		cookies.set("token", token);
+		cookies.set("token", jsonResponse.token);
+		cookies.set("userID", jsonResponse.userID);
 		navigate("/");
 		return; // parses JSON response into native JavaScript objects
 	}

@@ -6,6 +6,7 @@ const LogoutButton = () => {
 	const cookies = new Cookies(null, { path: "/" });
 	function logoutUser() {
 		cookies.remove("token");
+		cookies.remove("userID");
 		navigate("/log-in");
 		return;
 	}
