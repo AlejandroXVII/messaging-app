@@ -12,6 +12,7 @@
 		align-items: center;
 		align-content: center;
 		gap: 0.5rem;
+		border-right: var(--border);
 	}
 	.sidebar {
 		min-height: inherit;
@@ -45,28 +46,37 @@
 		display: grid;
 		grid-auto-flow: column;
 		grid-template-rows: auto 1fr auto;
+		max-height: 100dvh;
 		.messages {
 			background-color: #f0f4f5;
-			display: flex;
 			padding: 1rem;
+			max-height: calc(100dvh-5rem);
+			overflow-y: auto;
+			bottom: 0;
+			display: grid;
+
+			scroll-snap-type: y mandatory;
 			.all-message-container {
-				min-width: 100%;
-				max-height: auto;
-				display: flex;
-				flex-flow: column;
-				justify-content: end;
+				display: grid;
+				width: 100%;
+				max-height: fit-content;
 				gap: 0.5rem;
-				align-items: end;
+				bottom: 0;
+				justify-items: end;
+				align-content: end;
 				.message-container {
 					width: fit-content;
 					max-width: 90%;
+					height: fit-content;
 					padding: 0.5rem;
 					border-radius: 0.5rem;
 					background-color: rgb(152, 126, 223);
 				}
 				.received {
-					align-self: start;
-					background-color: rgb(197, 197, 197);
+					background-color: rgb(211, 211, 211);
+					justify-self: start;
+				}
+				.message-container:last-child {
 				}
 			}
 		}
@@ -99,6 +109,5 @@
 		padding: 0.5rem;
 		border-bottom: var(--border);
 		background-color: #eeeeee;
-		border-right: var(--border);
 	}
 }

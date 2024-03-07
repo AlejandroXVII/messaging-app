@@ -1,6 +1,6 @@
 import LogoutButton from "./components/LogoutButton";
 import "./styles/message-box.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Cookies from "universal-cookie";
 
 const API_URL = "http://localhost:3000";
@@ -53,6 +53,7 @@ const App = () => {
 					messages={messages}
 					otherUser={otherUser}
 					thisUser={thisUser}
+					fetchMessages={fetchMessages}
 				/>
 			</div>
 		</div>
@@ -106,15 +107,20 @@ const Sidebar = (prop) => {
 };
 
 const Text = (prop) => {
+	const messagesRef = useRef(null);
+	useEffect(() => {
+		messagesRef.current.scrollTo(0, document.body.scrollHeight);
+	}, [prop.messages]);
+
 	return (
 		<div className="text-box">
-			<div className="header bar">
+			<div className="bar">
 				{" "}
 				<h1>
 					{prop.otherUser !== null ? prop.otherUser.username : null}
 				</h1>
 			</div>
-			<div className="messages">
+			<div className="messages" ref={messagesRef}>
 				<div className="all-message-container">
 					{prop.messages !== null
 						? prop.messages.messages.map((message) => (
@@ -132,15 +138,47 @@ const Text = (prop) => {
 						: null}
 				</div>
 			</div>
-			<div className="send-messages bar">
-				<input type="text" name="message-input" />
-				<button className="icon icon-button">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-						<title>send-circle</title>
-						<path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M8,7.71V11.05L15.14,12L8,12.95V16.29L18,12L8,7.71Z" />
-					</svg>
-				</button>
-			</div>
+			<SendBar
+				otherUser={prop.otherUser}
+				thisUser={prop.thisUser}
+				fetchMessages={prop.fetchMessages}
+			/>
+		</div>
+	);
+};
+
+const SendBar = (prop) => {
+	const inputRef = useRef(null);
+	async function sendMessage() {
+		// Default options are marked with *
+		if (inputRef.current.value === "") return;
+		const messageText = inputRef.current.value;
+		inputRef.current.value = "";
+		await fetch(API_URL + "/chats/", {
+			method: "POST",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				from_user_id: prop.thisUser._id,
+				to_user_id: prop.otherUser._id,
+				text: messageText,
+			}),
+		});
+		prop.fetchMessages({
+			target: { parentNode: { id: prop.otherUser._id } },
+		});
+	}
+	return (
+		<div className="send-messages bar">
+			<input type="text" ref={inputRef} />
+			<button className="icon icon-button" onClick={() => sendMessage()}>
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+					<title>send-circle</title>
+					<path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M8,7.71V11.05L15.14,12L8,12.95V16.29L18,12L8,7.71Z" />
+				</svg>
+			</button>
 		</div>
 	);
 };
