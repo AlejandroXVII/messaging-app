@@ -1,16 +1,23 @@
+import { redirect } from "react-router-dom";
 import LogoutButton from "./components/LogoutButton";
 import "./styles/message-box.css";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useLayoutEffect } from "react";
 import Cookies from "universal-cookie";
+import { useNavigate } from "react-router-dom";
 
 const API_URL = "http://localhost:3000";
 
 const App = () => {
+	const messageDefault = {
+		messages: [{ _id: 0, text: "There is not message", sender_id: 0 }],
+	};
 	const [users, setUsers] = useState([]);
-	const [messages, setMessages] = useState(null);
+	const [messages, setMessages] = useState(messageDefault);
 	const [thisUser, setThisUser] = useState([]);
 	const [otherUser, setOtherUser] = useState(null);
 	const cookies = new Cookies(null, { path: "/" });
+	const navigate = useNavigate();
+
 	async function fetchUsers() {
 		// Default options are marked with *
 		const response = await fetch(API_URL + "/users", {
@@ -21,25 +28,49 @@ const App = () => {
 		setUsers(allUser);
 		setThisUser(allUser.find((user) => user._id === userID));
 	}
-	async function fetchMessages(e) {
+	async function fetchMessages(e, text = "no text") {
 		// Default options are marked with *
 		const targetID = e.target.parentNode.id || e.target.id;
-		const chat = thisUser.chats.find((chat) => chat.user_id === targetID);
+		let chat = thisUser.chats.find((chat) => chat.user_id === targetID);
 		const otherUserData = users.find((user) => user._id === targetID);
 		setOtherUser(otherUserData);
+		if (chat === undefined) {
+			fetchUsers();
+			chat = thisUser.chats.find((chat) => chat.user_id === targetID);
+			setMessages(null);
+			setMessages({
+				messages: [{ _id: 0, text: text, sender_id: thisUser._id }],
+			});
+			console.log("it should work now");
+		}
 		try {
 			const response = await fetch(API_URL + "/chats/" + chat.chat_id, {
 				method: "GET",
 			});
-			console.log(typeof response);
 			const allMessage = await response.json();
 			setMessages(allMessage);
 		} catch (error) {
-			setMessages(null);
+			if (text === "no text") setMessages(messageDefault);
 		}
 	}
-	useEffect(() => {
-		fetchUsers();
+	async function verifyToken(token) {
+		try {
+			await fetch(API_URL + "/token/" + token, {
+				method: "GET",
+			});
+		} catch (error) {
+			navigate("/log-in");
+		}
+	}
+	useLayoutEffect(() => {
+		const token = cookies.get("token");
+		console.log(token === undefined);
+		if (token === undefined) {
+			navigate("/log-in");
+		} else {
+			verifyToken(token);
+			fetchUsers();
+		}
 	}, []);
 	return (
 		<div className="container">
@@ -47,14 +78,21 @@ const App = () => {
 				<Sidebar
 					users={users}
 					thisUser={thisUser}
-					fetchMessages={fetchMessages}
-				/>
-				<Text
-					messages={messages}
 					otherUser={otherUser}
-					thisUser={thisUser}
 					fetchMessages={fetchMessages}
 				/>
+				{otherUser !== null ? (
+					<Text
+						messages={messages}
+						otherUser={otherUser}
+						thisUser={thisUser}
+						fetchMessages={fetchMessages}
+					/>
+				) : (
+					<div className="no-chat">
+						<h1>Select a chat</h1>
+					</div>
+				)}
 			</div>
 		</div>
 	);
@@ -115,7 +153,6 @@ const Text = (prop) => {
 	return (
 		<div className="text-box">
 			<div className="bar">
-				{" "}
 				<h1>
 					{prop.otherUser !== null ? prop.otherUser.username : null}
 				</h1>
@@ -129,7 +166,9 @@ const Text = (prop) => {
 									className={
 										message.sender_id === prop.thisUser._id
 											? "message-container"
-											: "message-container received"
+											: message.sender_id !== 0
+											? "message-container received"
+											: "default message-container"
 									}
 								>
 									<p>{message.text}</p>
@@ -166,9 +205,12 @@ const SendBar = (prop) => {
 				text: messageText,
 			}),
 		});
-		prop.fetchMessages({
-			target: { parentNode: { id: prop.otherUser._id } },
-		});
+		prop.fetchMessages(
+			{
+				target: { parentNode: { id: prop.otherUser._id } },
+			},
+			messageText
+		);
 	}
 	return (
 		<div className="send-messages bar">

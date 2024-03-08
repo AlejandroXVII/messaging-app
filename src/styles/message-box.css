@@ -76,7 +76,9 @@
 					background-color: rgb(211, 211, 211);
 					justify-self: start;
 				}
-				.message-container:last-child {
+				.default {
+					background-color: rgb(211, 211, 211);
+					justify-self: center;
 				}
 			}
 		}
@@ -93,6 +95,13 @@
 				border: var(--border);
 			}
 		}
+	}
+	.no-chat {
+		display: flex;
+		align-content: center;
+		justify-content: center;
+		align-items: center;
+		color: #b3b3b3;
 	}
 	.icon {
 		display: flex;
