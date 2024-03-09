@@ -2,10 +2,10 @@ import { Link } from "react-router-dom";
 import "../styles/form.css";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import API_URL from "./assets/api-url";
 
 const SignUp = () => {
 	const navigate = useNavigate();
-	const API_URL = "http://localhost:3000";
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 	async function registerUser(e) {

@@ -2,10 +2,10 @@ import { Link } from "react-router-dom";
 import "../styles/form.css";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
+import API_URL from "./assets/api-url";
 
 const Login = () => {
 	const navigate = useNavigate();
-	const API_URL = "http://localhost:3000";
 	const cookies = new Cookies(null, { path: "/" });
 	async function loginUser(e) {
 		// Default options are marked with *

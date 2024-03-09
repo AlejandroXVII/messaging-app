@@ -1,11 +1,9 @@
-import { redirect } from "react-router-dom";
 import LogoutButton from "./components/LogoutButton";
 import "./styles/message-box.css";
 import { useEffect, useState, useRef, useLayoutEffect } from "react";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
-
-const API_URL = "http://localhost:3000";
+import API_URL from "./assets/api-url";
 
 const App = () => {
 	const messageDefault = {
