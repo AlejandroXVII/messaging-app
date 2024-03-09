@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import "../styles/form.css";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
-import API_URL from "./assets/api-url";
+import API_URL from "../assets/api-url";
 
 const Login = () => {
 	const navigate = useNavigate();
